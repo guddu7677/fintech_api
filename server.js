@@ -7,19 +7,29 @@ const authRoutes = require("./routes/auth");
 
 const app = express();
 
-// middleware
 app.use(cors());
 app.use(express.json());
 
-// connect DB (IMPORTANT: before routes is better)
-connectDB();
-
-// routes
-app.use("/api/auth", authRoutes);
-
-// PORT (IMPORTANT FIX)
 const PORT = process.env.PORT || 6000;
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
+// safer startup
+const startServer = async () => {
+  try {
+    await connectDB(); // WAIT for DB
+
+    app.use("/api/auth", authRoutes);
+
+    app.get("/", (req, res) => {
+      res.send("API is running 🚀");
+    });
+
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
+
+  } catch (err) {
+    console.error("Server failed to start:", err);
+  }
+};
+
+startServer();
