@@ -7,17 +7,19 @@ const authRoutes = require("./routes/auth");
 
 const app = express();
 
-// connect DB
-connectDB();
-
 // middleware
 app.use(cors());
 app.use(express.json());
 
+// connect DB (IMPORTANT: before routes is better)
+connectDB();
+
 // routes
 app.use("/api/auth", authRoutes);
 
-// server
-app.listen(process.env.PORT, () => {
-  console.log(`🚀 Server running on port ${process.env.PORT}`);
+// PORT (IMPORTANT FIX)
+const PORT = process.env.PORT || 6000;
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });
