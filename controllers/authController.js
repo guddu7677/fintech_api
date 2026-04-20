@@ -78,8 +78,7 @@ exports.forgotPassword = async (req, res) => {
 
     await user.save();
 
-    const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
-
+  const resetUrl = `https://fintech-api-h3it.onrender.com/reset-password/${resetToken}`;
     await sendEmail(
       user.email,
       "Password Reset",
